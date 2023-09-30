@@ -1,10 +1,13 @@
 "use client";
 import { Grid, LinearProgress } from "@mui/material";
 import { styled, useTheme } from "@mui/styles";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, gridClasses } from "@mui/x-data-grid";
 import { memo } from "react";
 
 const StyledDataGrid = styled(DataGrid)(({ theme }: { theme: any }) => ({
+  [`& .${gridClasses.row}.even`]: {
+    backgroundColor: theme.palette.background.paper,
+  },
   border: 0,
   width: "100%",
   transition: "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
@@ -33,7 +36,7 @@ const StyledDataGrid = styled(DataGrid)(({ theme }: { theme: any }) => ({
   },
 
   "& .MuiDataGrid-columnHeaderTitleContainer": {
-    color: "white",
+    color: theme.palette.text.primary,
   },
   "& .MuiPaper-root, .MuiPopover-paper, .MuiMenu-paper": {
     color: theme.palette.text.secondary,
@@ -49,7 +52,7 @@ interface ReDataTableProps {
   isLoading?: boolean;
 }
 
-const ReDataTable: React.FC<ReDataTableProps> = ({
+const ReDataTableGrid: React.FC<ReDataTableProps> = ({
   rows = [],
   columns,
   isLoading = false,
@@ -64,7 +67,7 @@ const ReDataTable: React.FC<ReDataTableProps> = ({
         width: "100%",
         height: rows.length <= 0 ? 500 : "",
         "& .header-col": {
-          backgroundColor: theme.palette.primary.main,
+          backgroundColor: theme.palette.background.paper,
         },
         "& .MuiDataGrid-row": {
           "[aria-colindex$='1']": {
@@ -87,6 +90,9 @@ const ReDataTable: React.FC<ReDataTableProps> = ({
           },
         }}
         pageSizeOptions={[10, 20, 30]}
+        getRowClassName={(params) =>
+          params.indexRelativeToCurrentPage % 2 === 0 ? "odd" : "even"
+        }
         rowCount={rows.length}
         disableColumnSelector
         disableRowSelectionOnClick
@@ -95,4 +101,4 @@ const ReDataTable: React.FC<ReDataTableProps> = ({
   );
 };
 
-export default memo(ReDataTable);
+export default memo(ReDataTableGrid);

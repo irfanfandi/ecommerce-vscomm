@@ -2,26 +2,13 @@
 import ReButtonSubmit from "@/components/ReButtonSubmit";
 import ReInput from "@/components/ReInput";
 import { Box, Grid, Paper, Typography } from "@mui/material";
-import { makeStyles, useTheme } from "@mui/styles";
+import { useTheme } from "@mui/styles";
 import { useRouter } from "next/navigation";
-
-const useStyles = makeStyles((theme: any): object => ({
-  cardProduct: {
-    cursor: "pointer",
-    padding: theme.spacing(4),
-    border: "1px solid #fff",
-    "&:hover": {
-      border: "1px solid #D6D6D6",
-      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.12)",
-    },
-  },
-}));
 
 type Props = {};
 
 const LoginForm = (props: Props) => {
   const theme: any = useTheme();
-  const classes: any = useStyles();
   const router = useRouter();
 
   const handleSubmit = () => {

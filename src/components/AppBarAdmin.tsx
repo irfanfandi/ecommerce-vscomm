@@ -8,8 +8,6 @@ export const metadata = {
   title: "Admin",
 };
 
-const borderRoot = "1px solid rgb(229, 234, 242)";
-
 export default function AppBarAdmin() {
   return (
     <Fragment>
@@ -17,7 +15,6 @@ export default function AppBarAdmin() {
         position="fixed"
         sx={{
           zIndex: 2000,
-          borderBottom: borderRoot,
         }}
         elevation={0}
       >

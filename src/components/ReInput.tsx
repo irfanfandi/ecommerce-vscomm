@@ -12,7 +12,6 @@ import {
 } from "react";
 
 interface ReInputProps {
-  className?: string;
   label?: string;
   placeholder?: string;
   size?: "small" | "medium";
@@ -102,7 +101,6 @@ const ReInput = forwardRef<InputHandle, ReInputProps>((props, ref) => {
       )}
       <StyledTextField
         inputRef={ref}
-        className={props.className}
         // label={props.label}
         placeholder={props.placeholder || `Masukan ${props.label}`}
         size={props.size || "medium"}

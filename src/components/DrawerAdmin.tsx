@@ -1,33 +1,70 @@
-import { BookOnline, HomeMaxOutlined, Person } from "@mui/icons-material";
+"use client";
 import {
+  Box,
   Divider,
   Drawer,
-  List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Toolbar,
 } from "@mui/material";
-import { Fragment } from "react";
+import MuiList from "@mui/material/List";
+import { styled } from "@mui/material/styles";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { MENU_ADMIN } from "./ListMenu";
+
+const List = styled(MuiList)(({ theme }: { theme: any }) => ({
+  backgroundColor: theme.palette.background.paper,
+  marginTop: 10,
+  ".MuiListItemText-root": {
+    marginLeft: 0,
+  },
+  "&& .Mui-selected, && .Mui-selected:hover": {
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: 0,
+    color: "white",
+  },
+  "&& .MuiListItemButton-root:hover": {
+    borderRadius: 0,
+  },
+  "& .MuiListItemButton-root": {
+    paddingLeft: 24,
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  "& .MuiListItemIcon-root": {
+    minWidth: 0,
+    marginRight: 12,
+  },
+}));
 
 type Props = {};
 
-const MENU_ADMIN = [
-  { title: "Dashboard", icon: <HomeMaxOutlined /> },
-  { title: "Manajemen User", icon: <Person /> },
-  { title: "Manajemen Produk", icon: <BookOnline /> },
-];
 const DrawerAdmin = (props: Props) => {
+  const pathname = usePathname();
+  const route = useRouter();
+
+  useEffect(() => {
+    console.log(pathname, "pathname");
+  }, [pathname]);
+
+  const isDrawerSelected = (name: string): boolean => {
+    if (name === "Dashboard" && pathname === "/") return true;
+    return pathname.includes(name.replace(" ", "-").toLowerCase());
+  };
+
   return (
-    <Fragment>
+    <Box component="nav" sx={{ width: { sm: 245 }, flexShrink: { sm: 0 } }}>
       <Drawer
         sx={{
           width: 245,
           flexShrink: 0,
+          border: 0,
           "& .MuiDrawer-paper": {
             width: 245,
-            boxSizing: "border-box",
+            border: 0,
           },
         }}
         variant="permanent"
@@ -36,18 +73,28 @@ const DrawerAdmin = (props: Props) => {
         <Toolbar />
         <Divider />
         <List>
-          {MENU_ADMIN.map(({ title, icon }, index) => (
+          {MENU_ADMIN.map(({ title, icon, link }, index) => (
             <ListItem key={index} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>{icon}</ListItemIcon>
-                <ListItemText primary={title} />
+              <ListItemButton
+                selected={isDrawerSelected(title)}
+                onClick={() => {
+                  route.push(link);
+                }}
+              >
+                <ListItemIcon>{icon(isDrawerSelected(title))}</ListItemIcon>
+                <ListItemText
+                  primaryTypographyProps={{
+                    fontSize: 14,
+                    fontWeight: 450,
+                  }}
+                  primary={title}
+                />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-        <Divider />
       </Drawer>
-    </Fragment>
+    </Box>
   );
 };
 

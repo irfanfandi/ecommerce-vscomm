@@ -1,16 +1,15 @@
-import DashboardPage from "@/components/Dashboard/DashboardPage";
+import User from "@/components/Manajemen-user/User";
 import { Fragment } from "react";
 
 type Props = {};
-
 export const metadata = {
-  title: "Admin - Dashboard",
+  title: "Admin - User",
 };
 
 const page = (props: Props) => {
   return (
     <Fragment>
-      <DashboardPage />
+      <User />
     </Fragment>
   );
 };

@@ -38,7 +38,7 @@ const theme = createTheme({
       secondary: "#757575",
     },
     background: {
-      default: "#FFF",
+      default: "#F8F8F8",
       paper: "#FFF",
     },
     divider: "rgb(229, 234, 242)",

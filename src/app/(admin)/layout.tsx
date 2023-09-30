@@ -1,6 +1,6 @@
 import AppBarAdmin from "@/components/AppBarAdmin";
-import { Box } from "@mui/material";
-import { Fragment } from "react";
+import DrawerAdmin from "@/components/DrawerAdmin";
+import { Box, Toolbar } from "@mui/material";
 
 export const metadata = {
   title: "Admin",
@@ -14,10 +14,20 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Fragment>
+    <Box sx={{ display: "flex" }}>
       <AppBarAdmin />
-      {/* <DrawerAdmin /> */}
-      <Box sx={{ display: "flex" }}>{children}</Box>
-    </Fragment>
+      <DrawerAdmin />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 4,
+          width: { sm: `calc(100% - ${245}px)` },
+        }}
+      >
+        <Toolbar />
+        {children}
+      </Box>
+    </Box>
   );
 }
