@@ -8,17 +8,32 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed/user.ts"
+  },
   "dependencies": {
+    "@emotion/cache": "latest",
+    "@emotion/react": "latest",
+    "@emotion/server": "latest",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "latest",
+    "@mui/material": "latest",
+    "@mui/styles": "^5.9.0",
+    "@mui/x-data-grid": "^6.9.0",
+    "@prisma/client": "^5.3.1",
+    "bcryptjs": "^2.4.3",
+    "next": "13.4.7",
     "react": "latest",
     "react-dom": "latest",
-    "next": "latest"
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
-    "typescript": "latest",
-    "@types/react": "latest",
     "@types/node": "latest",
+    "@types/react": "latest",
     "@types/react-dom": "latest",
     "eslint": "latest",
-    "eslint-config-next": "latest"
+    "eslint-config-next": "latest",
+    "prisma": "^5.3.1",
+    "typescript": "5.1.6"
   }
 }
