@@ -14,6 +14,7 @@ export async function GET(req: Request) {
 
     const products = await prisma.product.findMany({
       where: { deleted: false },
+      orderBy: { id: "desc" },
     });
     return NextResponse.json(
       { code: 200, message: "Read data product success", data: products },

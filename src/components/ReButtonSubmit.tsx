@@ -20,7 +20,7 @@ export type ButtonHandle = {
 
 const ReButtonSubmit = forwardRef<ButtonHandle, ReButtonProps>(
   ({ onClick, title }, ref) => {
-    const [disable, setDisable] = useState(true);
+    const [disable, setDisable] = useState(false);
     const [loadingButton, setLoadingButton] = useState(false);
 
     useImperativeHandle(ref, () => ({
@@ -47,7 +47,9 @@ const ReButtonSubmit = forwardRef<ButtonHandle, ReButtonProps>(
         <Button
           disabled={disable || loadingButton}
           onClick={onClick}
+          fullWidth
           variant="contained"
+          sx={{ color: "white" }}
         >
           {loadingButton && (
             <CircularProgress size={20} sx={{ mr: 2 }} color="inherit" />

@@ -6,8 +6,6 @@ export const metadata = {
   title: "VascommShop",
 };
 
-const DRAWER_WIDTH = 240;
-
 export default function RootLayout({
   children,
 }: {
@@ -17,7 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ThemeRegistry>
-          <Box sx={{ display: "flex" }}>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
             <CssBaseline />
             {children}
           </Box>

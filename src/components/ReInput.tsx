@@ -40,14 +40,14 @@ const StyledTextField = styled(TextField)(({ theme }: { theme: any }) => ({
   },
   "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputBase-input, .MuiOutlinedInput-input":
     {
-      color: theme.palette.text.primary,
+      color: "GrayText",
     },
   "& .MuiInputBase-root, .MuiOutlinedInput-root": {
-    borderRadius: 10,
+    borderRadius: 0,
     fontSize: 14,
   },
   "& .MuiFormLabel-asterisk, .MuiInputLabel-asterisk": {
-    color: theme.palette.error.main,
+    color: "GrayText",
     fontSize: 14,
   },
   "& .MuiOutlinedInput-notchedOutline": {
