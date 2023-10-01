@@ -1,7 +1,10 @@
-import { isBoolean, isNumber, isRequired } from "@/utils/function";
+import { isRequired } from "@/utils/function";
 import { PrismaClient } from "@prisma/client";
+import { mkdir, stat, writeFile } from "fs/promises";
 import { NextResponse } from "next/server";
+import { join } from "path";
 const bcrypt = require("bcryptjs");
+const mime = require("mime");
 
 const prisma = new PrismaClient();
 
@@ -28,21 +31,51 @@ export async function GET(req: Request) {
   }
 }
 
+const uploadImage = async (file: File) => {
+  const path = `upload`;
+  const uploadDir = join(process.cwd(), "public", path);
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+
+  try {
+    await stat(uploadDir);
+  } catch (e: any) {
+    if (e.code === "ENOENT") {
+      await mkdir(uploadDir, { recursive: true });
+    }
+  }
+  const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+  const filename = `${file.name.replace(
+    /\.[^/.]+$/,
+    ""
+  )}-${uniqueSuffix}.${mime.getExtension(file.type)}`;
+  await writeFile(`${uploadDir}/${filename}`, buffer);
+  return `/${path}/${filename}`;
+};
+
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { name, image, price, isActive } = body;
+    const body = await req.formData();
+    const name: any = body.get("name");
+    const image = body.get("image");
+    const price: any = body.get("price");
+    const isActive: any = body.get("isActive");
+    const path = `upload`;
+    const file: File | null = image as unknown as File;
+    let imageData = `/${path}/default.png`;
 
-    isRequired(body, "name");
-    isNumber(price, "price");
-    isBoolean(isActive, "isActive");
+    if (file) {
+      imageData = await uploadImage(file);
+    }
+
+    isRequired({ name: name }, "name");
 
     const ress = await prisma.product.create({
       data: {
         name,
-        image,
-        price,
-        isActive,
+        image: imageData,
+        price: parseInt(price),
+        isActive: isActive === "true",
       },
     });
     return NextResponse.json(
@@ -59,21 +92,28 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
-    const body = await req.json();
-    const { id, name, image, price, isActive } = body;
+    const body = await req.formData();
+    const name: any = body.get("name");
+    const id: any = body.get("id");
+    const image = body.get("image");
+    const price: any = body.get("price");
+    const isActive: any = body.get("isActive");
+    const file: File | null = image as unknown as File;
+    let imageData = {};
 
-    isRequired(body, "id");
-    isRequired(body, "name");
-    isNumber(price, "price");
-    isBoolean(isActive, "isActive");
+    if (file) {
+      imageData = { image: await uploadImage(file) };
+    }
+
+    isRequired({ name: name }, "name");
 
     const ress = await prisma.product.update({
-      where: { id },
+      where: { id: parseInt(id) },
       data: {
         name,
-        image,
-        price,
-        isActive,
+        ...imageData,
+        price: parseInt(price),
+        isActive: isActive === "true",
       },
     });
     return NextResponse.json(

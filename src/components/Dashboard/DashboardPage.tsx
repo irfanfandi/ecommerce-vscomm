@@ -17,13 +17,6 @@ const useStyles = makeStyles((theme: any): object => ({
 
 type Props = {};
 
-const cardMenu = [
-  { title: "Jumlah User", value: "150 User" },
-  { title: "Jumlah User Aktif", value: "150 User" },
-  { title: "Jumlah Produk", value: "150 User" },
-  { title: "Jumlah Produk Aktif", value: "150 User" },
-];
-
 const columns = [
   {
     field: "name",
@@ -66,6 +59,37 @@ const DashboardPage = (props: Props) => {
   const theme: any = useTheme();
   const [dataProduct, setDataProduct] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [cardMenu, setCardMenu] = useState<any>([
+    { title: "Jumlah User", value: "0 User" },
+    { title: "Jumlah User Aktif", value: "0 User" },
+    { title: "Jumlah Produk", value: "0 User" },
+    { title: "Jumlah Produk Aktif", value: "0 User" },
+  ]);
+
+  const fetchDataDashboard = async () => {
+    setIsLoading(true);
+    try {
+      const ress = await fetch("/api/dashboard");
+      if (ress.ok) {
+        const data = await ress.json();
+        setCardMenu([
+          { title: "Jumlah User", value: `${data.data.all_users} User` },
+          {
+            title: "Jumlah User Aktif",
+            value: `${data.data.users_active} User`,
+          },
+          { title: "Jumlah Produk", value: `${data.data.all_products} Produk` },
+          {
+            title: "Jumlah Produk Aktif",
+            value: `${data.data.products_active} Produk`,
+          },
+        ]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+  };
 
   const fetchDataProduct = async () => {
     setIsLoading(true);
@@ -92,13 +116,14 @@ const DashboardPage = (props: Props) => {
 
   useEffect(() => {
     fetchDataProduct();
+    fetchDataDashboard();
   }, []);
 
   return (
     <Fragment>
       <Typography variant="h6">Dashboard</Typography>
       <Grid container mt={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {cardMenu.map(({ title, value }, idx) => (
+        {cardMenu.map(({ title, value }: any, idx: any) => (
           <Grid key={idx} item xl={3} xs={3}>
             <Card
               sx={{

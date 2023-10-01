@@ -1,7 +1,7 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { useTheme } from "@mui/styles";
 import axios from "axios";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReButtonSubmit, { ButtonHandle } from "../ReButtonSubmit";
 import ReInput, { InputHandle } from "../ReInput";
 import ReSwitch, { SwitchHandle } from "../ReSwitch";
@@ -19,16 +19,16 @@ const AddEditProductPage = ({
   const _refPrice = useRef<InputHandle>(null);
   const _refButtonSubmit = useRef<ButtonHandle>(null);
   const _refIsActive = useRef<SwitchHandle>(null);
+  const [file, setFile] = useState<File>();
 
   const handleSubmit = async () => {
     _refButtonSubmit.current?.setLoadingButton(true);
-    const payload = {
-      id: selectedData ? selectedData.id : "",
-      name: _refName.current?.getValue(),
-      image: "/upload/product1.png",
-      price: parseInt(_refPrice.current?.getValue()),
-      isActive: _refIsActive.current?.getValue(),
-    };
+    const payload = new FormData();
+    if (file) payload.set("image", file);
+    payload.append("id", selectedData ? selectedData.id : "");
+    payload.append("name", _refName.current?.getValue());
+    payload.append("price", _refPrice.current?.getValue());
+    payload.append("isActive", "true");
 
     try {
       const ress = selectedData
@@ -58,7 +58,23 @@ const AddEditProductPage = ({
 
   return (
     <>
-      <ReInput ref={_refImage} label="Image" />
+      <Grid container alignItems={"center"} justifyContent={"center"}>
+        <Grid item>
+          <input
+            type="file"
+            name="image"
+            onChange={(e) => setFile(e.target.files?.[0])}
+          />
+        </Grid>
+        <Typography
+          variant="subtitle2"
+          color={theme.palette.text.secondary}
+          sx={{ mt: 2 }}
+        >
+          Upload Image Product (ration (9:16))
+        </Typography>
+      </Grid>
+
       <ReInput ref={_refName} label="Nama" required={true} />
       <ReInput ref={_refPrice} label="Harga" type="number" required={true} />
       <ReSwitch ref={_refIsActive} label="Aktif" />
