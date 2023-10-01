@@ -10,9 +10,13 @@ export async function GET(req: Request) {
     const url = new URL(req.url);
     const skip = parseInt(url.searchParams.get("skip") || "0");
     const take = parseInt(url.searchParams.get("take") || "0");
-    const search = url.searchParams.get("search");
+    const takeQuery = take ? { take: take } : null;
 
-    const users = await prisma.user.findMany({ where: { deleted: false } });
+    const users = await prisma.user.findMany({
+      skip,
+      ...takeQuery,
+      where: { deleted: false },
+    });
     return NextResponse.json(
       { code: 200, message: "Read data users success", data: users },
       { status: 200 }

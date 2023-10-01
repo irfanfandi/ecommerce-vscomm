@@ -22,7 +22,7 @@ const StyledPopover = styled(Popover)(({ theme }: { theme: any }) => ({
   },
 }));
 
-export default function AppBarAdmin() {
+export default function AppBarAdmin({ user }: any) {
   const route = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const openPoper = Boolean(anchorEl);
@@ -66,7 +66,7 @@ export default function AppBarAdmin() {
                       Halo Admin
                     </Typography>
                   </Grid>
-                  <Typography align="left">Aden</Typography>
+                  <Typography align="left">{user?.name}</Typography>
                 </Grid>
                 <Grid item>
                   <Button

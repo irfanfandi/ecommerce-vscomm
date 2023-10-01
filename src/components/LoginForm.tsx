@@ -1,18 +1,37 @@
 "use client";
 import ReButtonSubmit from "@/components/ReButtonSubmit";
-import ReInput from "@/components/ReInput";
+import ReInput, { InputHandle } from "@/components/ReInput";
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import { useTheme } from "@mui/styles";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
 
 type Props = {};
 
 const LoginForm = (props: Props) => {
   const theme: any = useTheme();
   const router = useRouter();
+  const callbackUrl = "/dashboard";
+  const _refEmail = useRef<InputHandle>(null);
+  const _refPassword = useRef<InputHandle>(null);
 
-  const handleSubmit = () => {
-    router.push("/dashboard");
+  const handleSubmit = async () => {
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: _refEmail.current?.getValue(),
+        password: _refPassword.current?.getValue(),
+        callbackUrl,
+      });
+      if (!res?.error) {
+        router.push(callbackUrl);
+      } else {
+        alert("invalid email or password");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -70,8 +89,8 @@ const LoginForm = (props: Props) => {
             mulai menggunakan aplikasi
           </Typography>
           <Box component="form" noValidate sx={{ mt: 1 }}>
-            <ReInput label="Email / Nomor Telpon" />
-            <ReInput label="Password" />
+            <ReInput ref={_refEmail} label="Email / Nomor Telpon" />
+            <ReInput ref={_refPassword} label="Password" />
             <Grid mt={theme.spacing(4)}>
               <ReButtonSubmit title="Masuk" onClick={handleSubmit} />
             </Grid>

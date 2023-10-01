@@ -5,6 +5,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
+yarn install
+
+# next
 npm run dev
 # or
 yarn dev
@@ -12,7 +15,12 @@ yarn dev
 pnpm dev
 # or
 bun dev
+
+# next
+npx prisma migrate
+npx prisma seed
 ```
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

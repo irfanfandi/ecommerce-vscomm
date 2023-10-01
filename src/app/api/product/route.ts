@@ -13,9 +13,11 @@ export async function GET(req: Request) {
     const url = new URL(req.url);
     const skip = parseInt(url.searchParams.get("skip") || "0");
     const take = parseInt(url.searchParams.get("take") || "0");
-    const search = url.searchParams.get("search");
+    const takeQuery = take ? { take: take } : null;
 
     const products = await prisma.product.findMany({
+      skip,
+      ...takeQuery,
       where: { deleted: false },
       orderBy: { id: "desc" },
     });

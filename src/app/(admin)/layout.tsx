@@ -1,6 +1,8 @@
 import AppBarAdmin from "@/components/AppBarAdmin";
 import DrawerAdmin from "@/components/DrawerAdmin";
+import { authOptions } from "@/lib/auth";
 import { Box, Toolbar } from "@mui/material";
+import { getServerSession } from "next-auth";
 
 export const metadata = {
   title: "Admin",
@@ -8,14 +10,17 @@ export const metadata = {
 
 const borderRoot = "1px solid rgb(229, 234, 242)";
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBarAdmin />
+      <AppBarAdmin user={user} />
       <DrawerAdmin />
       <Box
         component="main"

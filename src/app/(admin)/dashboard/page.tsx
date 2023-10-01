@@ -7,7 +7,7 @@ export const metadata = {
   title: "Admin - Dashboard",
 };
 
-const page = (props: Props) => {
+const page = async (props: Props) => {
   return (
     <Fragment>
       <DashboardPage />
